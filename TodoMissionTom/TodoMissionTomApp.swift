@@ -12,7 +12,7 @@ import SwiftData
 struct TodoMissionTomApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Todo.self, Category.self
+            Todo.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
