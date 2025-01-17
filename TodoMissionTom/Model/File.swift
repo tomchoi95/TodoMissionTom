@@ -12,18 +12,20 @@ import Foundation
 class Todo {
     var id: UUID
     var title: String
-    var priority: Priority
+    var todoPriority: TodoPriority
     var upToDate: Date
     var latestUpdat: Date
     var category: Category
+    var isDone: Bool
     
-    init(id: UUID, title: String, priority: Priority, upToDate: Date, latestUpdat: Date, category: Category = Category()) {
+    init(id: UUID, title: String, todoPriority: TodoPriority = .medium, upToDate: Date, latestUpdat: Date, category: Category = Category(), isDone: Bool = false) {
         self.id = id
         self.title = title
-        self.priority = priority
+        self.todoPriority = todoPriority
         self.upToDate = upToDate
         self.latestUpdat = latestUpdat
         self.category = category
+        self.isDone = isDone
     }
 }
 
@@ -37,7 +39,7 @@ class Category {
 }
 
 
-enum Priority {
+enum TodoPriority: Hashable {
     case high
     case medium
     case low
