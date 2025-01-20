@@ -146,8 +146,7 @@
 				CODE_SIGN_ENTITLEMENTS = TodoMissionTom/TodoMissionTom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"TodoMissionTom/Preview Content\"";
-				DEVELOPMENT_TEAM = Q22HZ2NAV4;
+				DEVELOPMENT_TEAM = 59FP2PXRXK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TodoMissionTom/Info.plist;
@@ -177,8 +176,7 @@
 				CODE_SIGN_ENTITLEMENTS = TodoMissionTom/TodoMissionTom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"TodoMissionTom/Preview Content\"";
-				DEVELOPMENT_TEAM = Q22HZ2NAV4;
+				DEVELOPMENT_TEAM = 59FP2PXRXK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TodoMissionTom/Info.plist;
