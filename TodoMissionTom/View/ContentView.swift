@@ -5,40 +5,55 @@
 //  Created by 최범수 on 2025-01-17.
 //
 
+
+
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query() var todos: [Todo]
+    @Query(/* 쿼리 구현 하는 곳 */) var todos: [Todo] // 필터 구현 해야함
     @State private var searchText = ""
     @State private var plusCount = 0
     @State private var modalStatus: PassingMode?
     
-    private func openModalView(mode: PassingMode) {
-        
-    }
     
     var body: some View {
         
         NavigationStack {
-            List(todos) { todo in
-                TodoRowAccordionView(todo: todo)
+            List {
+                ForEach(todos) { todo in
+                    TodoRowAccordionView(todo: todo)
+                }
+                .onDelete { IndexSet in
+                    for index in IndexSet {
+                        modelContext.delete(todos[index])
+                    }
+                }
             }
             .navigationTitle("Todo List")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         plusCount += 1
-                        // 버튼 동작 하게 하는겨
+                        modalStatus = .add
                     } label: {
                         Image(systemName: "plus.circle.fill")
                             .symbolEffect(.bounce, value: plusCount)
-                            
+                        
                     }
                 }
             }
+            // 삭제 버튼 구현 해야함
             .searchable(text: $searchText)
+            .sheet(item: $modalStatus) { mode in
+                switch mode {
+                case .add:
+                    ModalView(mode: .add)
+                case .edit(let existingTodo):
+                    ModalView(mode: .edit(existingTodo))
+                }
+            }
         }
         
     }
@@ -54,15 +69,24 @@ struct TodoRowAccordionView: View {
     
     var body: some View {
         DisclosureGroup {
-            Text("콘텐츠다\(todo.content)")
+            Text("\(todo.content)")
         } label: {
-            Text("타이틀\(todo.title)")
+            Text("\(todo.title)")
         }
-
+        
     }
 }
 
-enum PassingMode {
+enum PassingMode: Identifiable {
     case add
     case edit(Todo)
+    
+    var id: String {
+        switch self {
+        case .add:
+            return "Add"
+        case .edit(let todo):
+            return "\(todo.id)"
+        }
+    }
 }

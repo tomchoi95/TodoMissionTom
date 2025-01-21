@@ -15,10 +15,10 @@ final class Todo {
     var initialTime: Date
     var isDone: Bool
     
-    init(title: String, content: String, initialTime: Date, isDone: Bool) {
+    init(title: String, content: String, isDone: Bool) {
         self.title = title
         self.content = content
-        self.initialTime = initialTime
+        self.initialTime = Date()
         self.isDone = isDone
     }
 }

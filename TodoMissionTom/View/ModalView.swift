@@ -9,10 +9,24 @@ import SwiftUI
 
 struct ModalView: View {
     let mode: PassingMode
-    
+    @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
     @State private var title = ""
     @State private var content = ""
+    @State private var isDone = false
     
+    init(mode: PassingMode) {
+        // 수정 버튼 눌렀을 때 일어나는 일
+        self.mode = mode
+        switch mode {
+        case .add:
+            break
+        case .edit(let todo):
+            _title = State(initialValue: todo.title)
+            _content = State(initialValue: todo.content)
+            _isDone = State(initialValue: todo.isDone)
+        }
+    }
     var body: some View {
         NavigationStack {
             Form {
@@ -28,10 +42,19 @@ struct ModalView: View {
                 .navigationTitle("\(title)")
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
-                        Text("저장 버튼 만들어라")
+                        Button {
+                            let newTodo = Todo(title: title, content: content, isDone: isDone)
+                            modelContext.insert(newTodo)
+                            dismiss()
+                        } label: {
+                            Text("저장")
+                        }
                     }
+                    
                     ToolbarItem(placement: .cancellationAction) {
-                        Text("취소 버튼 만들어라")
+                        Button("cancel") {
+                            dismiss()
+                        }
                     }
                 }
             }
