@@ -17,7 +17,7 @@ struct ModalView: View {
     @State private var isDone = false
     @State private var latestUpdateTime = Date()
     @State private var priority: Priority = .middle
-    @State private var dueDate: Date = Date()
+    @State private var dueDate: Date = Date.now
     @State private var category: Category = .default
     init(mode: PassingMode) {
         self.mode = mode
@@ -67,7 +67,7 @@ struct ModalView: View {
                         Button {
                             switch mode {
                             case .add:
-                                let newTodo = Todo(title: title, content: content, isDone: isDone, priority: priority, category: category)
+                                let newTodo = Todo(title: title, content: content, dueDate: dueDate, priority: priority, category: category, isDone: isDone)
                                 modelContext.insert(newTodo)
                             case .edit(let todo):
                                 todo.title = title
@@ -76,6 +76,7 @@ struct ModalView: View {
                                 todo.latestUpdateTime = Date()
                                 todo.category = category
                                 todo.priority = priority
+                                todo.dueDate = dueDate
                             }
                             dismiss()
                         } label: {

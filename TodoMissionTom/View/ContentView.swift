@@ -12,19 +12,22 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query var todos: [Todo]
+    @Query() var todos: [Todo]
     @State private var searchText = ""
     @State private var plusCount = 0
     @State private var modalStatus: PassingMode?
     @State private var selectedDone: Bool?
     @State private var selectedCategory: Category?
     @State private var selectedPriority: Priority?
+    
     private var filteredTodo: [Todo] {
         let filterdTodos = todos.filter { todo in
             let searchFilter = searchText == "" || todo.title.localizedCaseInsensitiveContains(searchText) || todo.content.localizedCaseInsensitiveContains(searchText)
+            let caterotyFilter = selectedCategory == nil || todo.category == selectedCategory
+            let priorityFilter = selectedPriority == nil || todo.priority == selectedPriority
             // 필터 구현해야함
             
-            return searchFilter
+            return searchFilter && caterotyFilter && priorityFilter
         }
         return filterdTodos
     }
@@ -117,11 +120,6 @@ struct ContentView: View {
             }
         }
         
-        List {
-            ForEach(todos) { todo in
-                TodoRowAccordionView(todo: todo)
-            }
-        }
     }
 }
 
@@ -136,13 +134,32 @@ struct TodoRowAccordionView: View {
     
     var body: some View {
         DisclosureGroup {
-            Text("\(todo.content)")
+            VStack(alignment: .leading, spacing: 8) {
+                Text(todo.content)
+                
+                HStack {
+                    Label("Due: ", systemImage: "calendar")
+                    Text(todo.dueDate.formatted(date: .abbreviated, time: .shortened))
+                }
+                .font(.caption)
+                .foregroundColor(.gray)
+                
+                HStack {
+                    Label("Updated: ", systemImage: "clock")
+                    Text(todo.latestUpdateTime.formatted(date: .abbreviated, time: .shortened))
+                }
+                .font(.caption)
+                .foregroundColor(.gray)
+            }
         } label: {
             Image(systemName: todo.isDone ? "chevron.down.circle" : "circle")
                 .onTapGesture {
                     todo.isDone.toggle()
                 }
             Text("\(todo.title)")
+            Spacer()
+            Text(todo.category.rawValue)
+            Text(todo.priority.rawValue)
         }
         
     }
