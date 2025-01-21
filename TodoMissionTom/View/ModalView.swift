@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ModalView: View {
     let mode: PassingMode
@@ -14,6 +15,7 @@ struct ModalView: View {
     @State private var title = ""
     @State private var content = ""
     @State private var isDone = false
+    @State private var latestUpdateTime = Date()
     
     init(mode: PassingMode) {
         self.mode = mode
@@ -29,14 +31,14 @@ struct ModalView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section {
-                    Text("여기에 옵션 넣자")
+                Section("옵션") {
+                    Toggle("", isOn: $isDone)
+                }
+                Section() {
+                    TextField("제목을 입력하세요", text: $title)
                 }
                 Section {
-                    TextField("제목", text: $title)
-                }
-                Section {
-                    TextField("내용", text: $content)
+                    TextField("내용을 입력하세요", text: $content)
                 }
                 .navigationTitle("\(title)")
                 .toolbar {

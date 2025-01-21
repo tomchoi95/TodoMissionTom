@@ -5,24 +5,33 @@
 //  Created by 최범수 on 2025-01-17.
 //
 
-
+// 우선순위 추가
+// 우선순위 UI
+// 우선순위 필터 추가
 
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(/* 쿼리 구현 하는 곳 */) var todos: [Todo] // 필터 구현 해야함
+    @Query var todos: [Todo]
     @State private var searchText = ""
     @State private var plusCount = 0
     @State private var modalStatus: PassingMode?
-    
-    
+    private var filteredTodo: [Todo] {
+        let filterdTodos = todos.filter { todo in
+            let searchFilter = searchText == "" || todo.title.localizedCaseInsensitiveContains(searchText) || todo.content.localizedCaseInsensitiveContains(searchText)
+            
+            return searchFilter
+        }
+        return filterdTodos
+    }
+   
     var body: some View {
         
         NavigationStack {
             List {
-                ForEach(todos) { todo in
+                ForEach(filteredTodo) { todo in
                     TodoRowAccordionView(todo: todo)
                         .swipeActions(edge: .leading) {
                             Button {
@@ -63,12 +72,17 @@ struct ContentView: View {
             }
         }
         
+        List {
+            ForEach(todos) { todo in
+                TodoRowAccordionView(todo: todo)
+            }
+        }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Todo.self)
+        .modelContainer(for: Todo.self,inMemory: false)
 }
 
 struct TodoRowAccordionView: View {
