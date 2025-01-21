@@ -5,9 +5,7 @@
 //  Created by 최범수 on 2025-01-17.
 //
 
-// 우선순위 추가
-// 우선순위 UI
-// 우선순위 필터 추가
+// 필터뷰 만들기.
 
 import SwiftUI
 import SwiftData
@@ -18,9 +16,12 @@ struct ContentView: View {
     @State private var searchText = ""
     @State private var plusCount = 0
     @State private var modalStatus: PassingMode?
+    @State private var selectedCategory: Category?
+    @State private var selectedPriority: Priority?
     private var filteredTodo: [Todo] {
         let filterdTodos = todos.filter { todo in
             let searchFilter = searchText == "" || todo.title.localizedCaseInsensitiveContains(searchText) || todo.content.localizedCaseInsensitiveContains(searchText)
+            // 필터 구현해야함
             
             return searchFilter
         }
@@ -28,6 +29,9 @@ struct ContentView: View {
     }
    
     var body: some View {
+        
+        
+        // 필터뷰 구현 해야함
         
         NavigationStack {
             List {

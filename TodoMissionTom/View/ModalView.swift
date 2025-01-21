@@ -72,6 +72,8 @@ struct ModalView: View {
                                 todo.content = content
                                 todo.isDone = isDone
                                 todo.latestUpdateTime = Date()
+                                todo.category = category
+                                todo.priority = priority
                             }
                             dismiss()
                         } label: {
