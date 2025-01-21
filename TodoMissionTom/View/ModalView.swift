@@ -35,7 +35,12 @@ struct ModalView: View {
         NavigationStack {
             Form {
                 Section("옵션") {
-                    Toggle("", isOn: $isDone)
+                    Picker("Priority", selection: $selectedPriority) {
+                        ForEach([Priority.high, .middle, .low]) {
+                            Text("\($0.rawValue)").tag($0)
+                        }
+                    }
+                    Toggle("완료", isOn: $isDone)
                 }
                 Section() {
                     TextField("제목을 입력하세요", text: $title)
