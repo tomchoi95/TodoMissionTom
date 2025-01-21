@@ -28,7 +28,7 @@ final class Todo {
     }
 }
 
-enum Priority: String, Identifiable, Hashable {
+enum Priority: String, Identifiable, Codable {
     var id: String { self.rawValue }
     
     case high = "높음"

@@ -16,6 +16,7 @@ struct ModalView: View {
     @State private var content = ""
     @State private var isDone = false
     @State private var latestUpdateTime = Date()
+    @State private var selectedPriority: Priority = .middle
     
     init(mode: PassingMode) {
         self.mode = mode
@@ -26,8 +27,10 @@ struct ModalView: View {
             _title = State(initialValue: todo.title)
             _content = State(initialValue: todo.content)
             _isDone = State(initialValue: todo.isDone)
+            _selectedPriority = State(initialValue: todo.priority)
         }
     }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -46,7 +49,7 @@ struct ModalView: View {
                         Button {
                             switch mode {
                             case .add:
-                                let newTodo = Todo(title: title, content: content, isDone: isDone)
+                                let newTodo = Todo(title: title, content: content, isDone: isDone, priority: selectedPriority)
                                 modelContext.insert(newTodo)
                             case .edit(let todo):
                                 todo.title = title
