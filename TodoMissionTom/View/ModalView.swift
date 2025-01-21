@@ -17,7 +17,7 @@ struct ModalView: View {
     @State private var isDone = false
     @State private var latestUpdateTime = Date()
     @State private var selectedPriority: Priority = .middle
-    
+    @State private var selectedDueDate: Date = Date()
     init(mode: PassingMode) {
         self.mode = mode
         switch mode {
@@ -36,11 +36,12 @@ struct ModalView: View {
             Form {
                 Section("옵션") {
                     Picker("Priority", selection: $selectedPriority) {
-                        ForEach([Priority.high, .middle, .low]) {
+                        ForEach(Priority.allCases) {
                             Text("\($0.rawValue)").tag($0)
                         }
                     }
-                    Toggle("완료", isOn: $isDone)
+                    DatePicker("Due", selection: $selectedDueDate , displayedComponents: [.date, .hourAndMinute])
+                    Toggle("Completion", isOn: $isDone)
                 }
                 Section() {
                     TextField("제목을 입력하세요", text: $title)
@@ -61,7 +62,6 @@ struct ModalView: View {
                                 todo.content = content
                                 todo.isDone = isDone
                             }
-                            
                             dismiss()
                         } label: {
                             Text("저장")

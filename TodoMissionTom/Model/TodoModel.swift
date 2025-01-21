@@ -28,10 +28,17 @@ final class Todo {
     }
 }
 
-enum Priority: String, Identifiable, Codable {
+enum Priority: String, Identifiable, Codable, CaseIterable {
     var id: String { self.rawValue }
     
     case high = "높음"
     case middle = "보통"
     case low = "낮음"
+}
+
+enum Category: Codable, CaseIterable {
+    case `default`
+    case work
+    case personal
+    case study
 }
