@@ -16,27 +16,31 @@ final class Todo {
     var latestUpdateTime: Date
     var dueDate: Date = Date() // 기능 추가 해야함.
     var priority: Priority
+    var category: Category
     var isDone: Bool
     
-    init(title: String, content: String, isDone: Bool, priority: Priority) {
+    init(title: String, content: String, isDone: Bool, priority: Priority, category: Category) {
         self.title = title
         self.content = content
         self.initialTime = Date()
         self.latestUpdateTime = Date()
         self.isDone = isDone
         self.priority = priority
+        self.category = category
     }
 }
 
 enum Priority: String, Identifiable, Codable, CaseIterable {
     var id: String { self.rawValue }
     
-    case high = "높음"
-    case middle = "보통"
-    case low = "낮음"
+    case high = "high"
+    case middle = "middle"
+    case low = "low"
 }
 
-enum Category: Codable, CaseIterable {
+enum Category: String, Identifiable, Codable, CaseIterable {
+    var id: String { self.rawValue }
+    
     case `default`
     case work
     case personal

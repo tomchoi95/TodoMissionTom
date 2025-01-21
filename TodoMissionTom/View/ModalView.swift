@@ -16,8 +16,9 @@ struct ModalView: View {
     @State private var content = ""
     @State private var isDone = false
     @State private var latestUpdateTime = Date()
-    @State private var selectedPriority: Priority = .middle
-    @State private var selectedDueDate: Date = Date()
+    @State private var priority: Priority = .middle
+    @State private var dueDate: Date = Date()
+    @State private var category: Category = .default
     init(mode: PassingMode) {
         self.mode = mode
         switch mode {
@@ -27,7 +28,7 @@ struct ModalView: View {
             _title = State(initialValue: todo.title)
             _content = State(initialValue: todo.content)
             _isDone = State(initialValue: todo.isDone)
-            _selectedPriority = State(initialValue: todo.priority)
+            _priority = State(initialValue: todo.priority)
         }
     }
     
@@ -35,12 +36,21 @@ struct ModalView: View {
         NavigationStack {
             Form {
                 Section("옵션") {
-                    Picker("Priority", selection: $selectedPriority) {
+                    
+                    Picker("Priority", selection: $priority) {
                         ForEach(Priority.allCases) {
                             Text("\($0.rawValue)").tag($0)
                         }
                     }
-                    DatePicker("Due", selection: $selectedDueDate , displayedComponents: [.date, .hourAndMinute])
+                    
+                    Picker("Category", selection: $category) {
+                        ForEach(Category.allCases) {
+                            Text("\($0.rawValue)").tag($0)
+                        }
+                    }
+                    
+                    DatePicker("Due", selection: $dueDate , displayedComponents: [.date, .hourAndMinute])
+                    
                     Toggle("Completion", isOn: $isDone)
                 }
                 Section() {
@@ -55,12 +65,13 @@ struct ModalView: View {
                         Button {
                             switch mode {
                             case .add:
-                                let newTodo = Todo(title: title, content: content, isDone: isDone, priority: selectedPriority)
+                                let newTodo = Todo(title: title, content: content, isDone: isDone, priority: priority, category: category)
                                 modelContext.insert(newTodo)
                             case .edit(let todo):
                                 todo.title = title
                                 todo.content = content
                                 todo.isDone = isDone
+                                todo.latestUpdateTime = Date()
                             }
                             dismiss()
                         } label: {
