@@ -43,8 +43,16 @@ struct ModalView: View {
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
                         Button {
-                            let newTodo = Todo(title: title, content: content, isDone: isDone)
-                            modelContext.insert(newTodo)
+                            switch mode {
+                            case .add:
+                                let newTodo = Todo(title: title, content: content, isDone: isDone)
+                                modelContext.insert(newTodo)
+                            case .edit(let todo):
+                                todo.title = title
+                                todo.content = content
+                                todo.isDone = isDone
+                            }
+                            
                             dismiss()
                         } label: {
                             Text("저장")
