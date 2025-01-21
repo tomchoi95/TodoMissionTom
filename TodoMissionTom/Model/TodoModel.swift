@@ -46,3 +46,5 @@ enum Category: String, Identifiable, Codable, CaseIterable {
     case personal
     case study
 }
+
+

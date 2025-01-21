@@ -29,6 +29,8 @@ struct ModalView: View {
             _content = State(initialValue: todo.content)
             _isDone = State(initialValue: todo.isDone)
             _priority = State(initialValue: todo.priority)
+            _dueDate = State(initialValue: todo.dueDate)
+            _category = State(initialValue: todo.category)
         }
     }
     

@@ -16,6 +16,7 @@ struct ContentView: View {
     @State private var searchText = ""
     @State private var plusCount = 0
     @State private var modalStatus: PassingMode?
+    @State private var selectedDone: Bool?
     @State private var selectedCategory: Category?
     @State private var selectedPriority: Priority?
     private var filteredTodo: [Todo] {
@@ -27,13 +28,53 @@ struct ContentView: View {
         }
         return filterdTodos
     }
-   
+    
+    
+    var filterView: some View {
+        HStack {
+            // 완료 선택
+            
+            // 우선순위 선택
+            Menu {
+                Button("All Priorities") {
+                    selectedPriority = nil
+                }
+                ForEach(Priority.allCases) { priority in
+                    Button(priority.rawValue) {
+                        selectedPriority = priority
+                    }
+                }
+            } label: {
+                Text(selectedPriority?.rawValue ?? "All Priorities")
+            }
+            
+            Menu {
+                Button("All Categories") {
+                    selectedCategory = nil
+                }
+                ForEach(Category.allCases) { category in
+                    Button(category.rawValue) {
+                        selectedCategory = category
+                    }
+                }
+            } label: {
+                Text(selectedCategory?.rawValue ?? "All Categories")
+            }
+            
+            // 날짜 선택 - 오늘, 이번주, 커스텀 날짜.
+            // 정렬 옵션 - 듀데이. 중요도. 업데이트순. // 오름차순, 내림차순
+        }
+    }
+    
+    
     var body: some View {
         
         
-        // 필터뷰 구현 해야함
         
         NavigationStack {
+            
+            filterView
+            // 필터뷰 구현 해야함
             List {
                 ForEach(filteredTodo) { todo in
                     TodoRowAccordionView(todo: todo)
