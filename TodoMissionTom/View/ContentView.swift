@@ -30,7 +30,7 @@ struct ContentView: View {
                             } label: {
                                 Text("edit")
                             }
-
+                            
                         }
                 }
                 .onDelete { IndexSet in
@@ -79,6 +79,10 @@ struct TodoRowAccordionView: View {
         DisclosureGroup {
             Text("\(todo.content)")
         } label: {
+            Image(systemName: todo.isDone ? "chevron.down.circle" : "circle")
+                .onTapGesture {
+                    todo.isDone.toggle()
+                }
             Text("\(todo.title)")
         }
         

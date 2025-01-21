@@ -16,7 +16,6 @@ struct ModalView: View {
     @State private var isDone = false
     
     init(mode: PassingMode) {
-        // 수정 버튼 눌렀을 때 일어나는 일
         self.mode = mode
         switch mode {
         case .add:
