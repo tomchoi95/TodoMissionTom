@@ -18,17 +18,20 @@ final class Todo {
     var priority: Priority
     var isDone: Bool
     
-    init(title: String, content: String, isDone: Bool) {
+    init(title: String, content: String, isDone: Bool, priority: Priority) {
         self.title = title
         self.content = content
         self.initialTime = Date()
         self.latestUpdateTime = Date()
         self.isDone = isDone
+        self.priority = priority
     }
 }
 
-enum Priority {
-    case high
-    case middle
-    case low
+enum Priority: String, Identifiable, Hashable {
+    var id: String { self.rawValue }
+    
+    case high = "높음"
+    case middle = "보통"
+    case low = "낮음"
 }
