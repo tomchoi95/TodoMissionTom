@@ -13,23 +13,27 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query() var todos: [Todo]
-    @State private var searchText = ""
-    @State private var plusCount = 0
-    @State private var modalStatus: PassingMode?
-    @State private var selectedDone: Bool?
-    @State private var selectedCategory: Category?
-    @State private var selectedPriority: Priority?
+    @State private var searchText = "" // 검색어 상태
+    @State private var plusCount = 0 // 이미지 움직이자
+    @State private var modalStatus: PassingMode? // 모달창 상태
+    @State private var selectedDone: Bool? // 완료 상태를 알고싶다!
+    @State private var selectedCategory: Category? // 카테고리 지정한거 알고싶다!
+    @State private var selectedPriority: Priority? // 우선순위 지정한거 알고싶다!
+    @State private var selectedDate: Date? // 지정한 날짜에 대해 알고싶다!
     
     private var filteredTodo: [Todo] {
         let filterdTodos = todos.filter { todo in
             let searchFilter = searchText == "" || todo.title.localizedCaseInsensitiveContains(searchText) || todo.content.localizedCaseInsensitiveContains(searchText)
             let caterotyFilter = selectedCategory == nil || todo.category == selectedCategory
             let priorityFilter = selectedPriority == nil || todo.priority == selectedPriority
-            // 필터 구현해야함
+            let completionFilter = selectedDone == nil || todo.isDone == selectedDone
+
+            // 필터 구현해야함 - 날짜필터 구현해야함
+            // let dateFilter
             
-            return searchFilter && caterotyFilter && priorityFilter
+            return searchFilter && caterotyFilter && priorityFilter && completionFilter
         }
-        return filterdTodos
+        return filterdTodos // 정렬 옵션 해야함
     }
     
     
@@ -37,7 +41,7 @@ struct ContentView: View {
         HStack {
             // 완료 선택
             
-            // 우선순위 선택
+            // 우선순위 선택 메뉴
             Menu {
                 Button("All Priorities") {
                     selectedPriority = nil
@@ -51,6 +55,7 @@ struct ContentView: View {
                 Text(selectedPriority?.rawValue ?? "All Priorities")
             }
             
+            // 카테고리 선택 메뉴
             Menu {
                 Button("All Categories") {
                     selectedCategory = nil
@@ -75,9 +80,9 @@ struct ContentView: View {
         
         
         NavigationStack {
-            
-            filterView
             // 필터뷰 구현 해야함
+            filterView
+            
             List {
                 ForEach(filteredTodo) { todo in
                     TodoRowAccordionView(todo: todo)
