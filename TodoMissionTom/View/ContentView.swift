@@ -24,6 +24,14 @@ struct ContentView: View {
             List {
                 ForEach(todos) { todo in
                     TodoRowAccordionView(todo: todo)
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                modalStatus = .edit(todo)
+                            } label: {
+                                Text("edit")
+                            }
+
+                        }
                 }
                 .onDelete { IndexSet in
                     for index in IndexSet {
@@ -44,7 +52,6 @@ struct ContentView: View {
                     }
                 }
             }
-            // 삭제 버튼 구현 해야함
             .searchable(text: $searchText)
             .sheet(item: $modalStatus) { mode in
                 switch mode {
@@ -61,6 +68,7 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .modelContainer(for: Todo.self)
 }
 
 struct TodoRowAccordionView: View {
