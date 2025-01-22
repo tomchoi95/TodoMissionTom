@@ -19,7 +19,7 @@ struct ContentView: View {
     @State private var selectedCategory: Category? // 카테고리 지정한거 알고싶다!
     @State private var selectedPriority: Priority? // 우선순위 지정한거 알고싶다!
     @State private var selectedDate: Date? // 지정한 날짜에 대해 알고싶다!
-    @State private var sortingOption: SortingOption = .Update
+    @State private var sortingOption: SortingOption = .update
     @State private var isOrderForward: Bool = false
     //    private var filteredTodo: [Todo] {
     //        let filterdTodos = todos.filter { todo in
@@ -175,7 +175,7 @@ struct TodoRowAccordionView: View {
 enum SortingOption {
     case date
     case priority
-    case Update
+    case update
 }
 
 
@@ -200,6 +200,7 @@ struct TodoListView {
     var selectedCategory: Category? // 카테고리 지정한거 알고싶다!
     var selectedPriority: Priority? // 우선순위 지정한거 알고싶다!
     var selectedDate: Date? // 지정한 날짜에 대해 알고싶다!
+    var isOrderForward: Bool
     
     init(searchText: String, selectedDone: Bool?, selectedCategory: Category?, selectedPriority: Priority?, selectedDate: Date?, sortingOption: SortingOption, isOrderForward: Bool) {
         self.searchText = searchText
@@ -207,11 +208,18 @@ struct TodoListView {
         self.selectedCategory = selectedCategory
         self.selectedPriority = selectedPriority
         self.selectedDate = selectedDate
+        self.isOrderForward = isOrderForward
+        
         _todos = Query(filter: #Predicate<Todo> { todo in
-            (searchText.isEmpty || todo.title.localizedCaseInsensitiveContains(searchText)) && //검색어
+            (searchText.isEmpty || todo.title.localizedCaseInsensitiveContains(searchText)) || todo.content.localizedCaseInsensitiveCompare(searchText) && //검색어
+            
             (selectedCategory == nil || todo.category == selectedCategory) && // 카테고리
-            (selectedPriority == nil || todo.priority == selectedPriority) // 우선순위
-        }, sort: \.title ,order: isOrderForward ? .forward : .reverse , animation: .easeInOut)
+            
+            (selectedPriority == nil || todo.priority == selectedPriority)
+        },
+                       sort: \.title ,
+                       order: .forward) ,
+                       animation: .easeInOut)
     }
     
 }
