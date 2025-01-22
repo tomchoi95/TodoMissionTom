@@ -11,41 +11,7 @@ import SwiftData
 @Model
 final class Todo {
     var title: String
-    var content: String
-    var initialTime: Date
-    var latestUpdateTime: Date
-    var dueDate: Date
-    var priority: Priority
-    var category: Category
-    var isDone: Bool
-    
-    init(title: String, content: String, dueDate: Date, priority: Priority, category: Category, isDone: Bool) {
+    init(title: String) {
         self.title = title
-        self.content = content
-        self.initialTime = Date()
-        self.latestUpdateTime = Date()
-        self.isDone = isDone
-        self.priority = priority
-        self.category = category
-        self.dueDate = dueDate
     }
 }
-
-enum Priority: String, Identifiable, Codable, CaseIterable {
-    var id: String { self.rawValue }
-    
-    case high = "high"
-    case middle = "middle"
-    case low = "low"
-}
-
-enum Category: String, Identifiable, Codable, CaseIterable {
-    var id: String { self.rawValue }
-    
-    case `default`
-    case work
-    case personal
-    case study
-}
-
-
