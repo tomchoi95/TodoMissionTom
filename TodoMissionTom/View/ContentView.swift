@@ -12,29 +12,34 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query() var todos: [Todo]
+    @Query var todos: [Todo]
     @State private var searchText = "" // 검색어 상태
-    @State private var plusCount = 0 // 이미지 움직이자
     @State private var modalStatus: PassingMode? // 모달창 상태
     @State private var selectedDone: Bool? // 완료 상태를 알고싶다!
     @State private var selectedCategory: Category? // 카테고리 지정한거 알고싶다!
     @State private var selectedPriority: Priority? // 우선순위 지정한거 알고싶다!
     @State private var selectedDate: Date? // 지정한 날짜에 대해 알고싶다!
-    
-    private var filteredTodo: [Todo] {
-        let filterdTodos = todos.filter { todo in
-            let searchFilter = searchText == "" || todo.title.localizedCaseInsensitiveContains(searchText) || todo.content.localizedCaseInsensitiveContains(searchText)
-            let caterotyFilter = selectedCategory == nil || todo.category == selectedCategory
-            let priorityFilter = selectedPriority == nil || todo.priority == selectedPriority
-            let completionFilter = selectedDone == nil || todo.isDone == selectedDone
-
-            // 필터 구현해야함 - 날짜필터 구현해야함
-            // let dateFilter
-            
-            return searchFilter && caterotyFilter && priorityFilter && completionFilter
-        }
-        return filterdTodos // 정렬 옵션 해야함
-    }
+    @State private var sortingOption: SortingOption = .Update
+    @State private var isOrderForward: Bool = false
+    //    private var filteredTodo: [Todo] {
+    //        let filterdTodos = todos.filter { todo in
+    //            let searchFilter = searchText == "" || todo.title.localizedCaseInsensitiveContains(searchText) || todo.content.localizedCaseInsensitiveContains(searchText)
+    //            let caterotyFilter = selectedCategory == nil || todo.category == selectedCategory
+    //            let priorityFilter = selectedPriority == nil || todo.priority == selectedPriority
+    //            let completionFilter = selectedDone == nil || todo.isDone == selectedDone
+    //
+    //            // 필터 구현해야함 - 날짜필터 구현해야함
+    //            // let dateFilter
+    //
+    //            return searchFilter && caterotyFilter && priorityFilter && completionFilter
+    //        }
+    //        return filterdTodos.sorted { first, second in
+    //            let comparison: Bool
+    //
+    //
+    //            return comparison
+    //        } // 정렬 옵션 해야함
+    //    }
     
     
     var filterView: some View {
@@ -84,7 +89,7 @@ struct ContentView: View {
             filterView
             
             List {
-                ForEach(filteredTodo) { todo in
+                ForEach(todos) { todo in
                     TodoRowAccordionView(todo: todo)
                         .swipeActions(edge: .leading) {
                             Button {
@@ -105,12 +110,9 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        plusCount += 1
                         modalStatus = .add
                     } label: {
                         Image(systemName: "plus.circle.fill")
-                            .symbolEffect(.bounce, value: plusCount)
-                        
                     }
                 }
             }
@@ -130,7 +132,7 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Todo.self,inMemory: false)
+        .modelContainer(for: Todo.self)
 }
 
 struct TodoRowAccordionView: View {
@@ -170,6 +172,13 @@ struct TodoRowAccordionView: View {
     }
 }
 
+enum SortingOption {
+    case date
+    case priority
+    case Update
+}
+
+
 enum PassingMode: Identifiable {
     case add
     case edit(Todo)
@@ -183,3 +192,27 @@ enum PassingMode: Identifiable {
         }
     }
 }
+
+struct TodoListView {
+    @Query var todos: [Todo]
+    var searchText = "" // 검색어 상태
+    var selectedDone: Bool? // 완료 상태를 알고싶다!
+    var selectedCategory: Category? // 카테고리 지정한거 알고싶다!
+    var selectedPriority: Priority? // 우선순위 지정한거 알고싶다!
+    var selectedDate: Date? // 지정한 날짜에 대해 알고싶다!
+    
+    init(searchText: String, selectedDone: Bool?, selectedCategory: Category?, selectedPriority: Priority?, selectedDate: Date?, sortingOption: SortingOption, isOrderForward: Bool) {
+        self.searchText = searchText
+        self.selectedDone = selectedDone
+        self.selectedCategory = selectedCategory
+        self.selectedPriority = selectedPriority
+        self.selectedDate = selectedDate
+        _todos = Query(filter: #Predicate<Todo> { todo in
+            (searchText.isEmpty || todo.title.localizedCaseInsensitiveContains(searchText)) && //검색어
+            (selectedCategory == nil || todo.category == selectedCategory) && // 카테고리
+            (selectedPriority == nil || todo.priority == selectedPriority) // 우선순위
+        }, sort: \.title ,order: isOrderForward ? .forward : .reverse , animation: .easeInOut)
+    }
+    
+}
+

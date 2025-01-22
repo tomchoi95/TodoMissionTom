@@ -15,9 +15,9 @@ struct ModalView: View {
     @State private var title = ""
     @State private var content = ""
     @State private var isDone = false
-    @State private var latestUpdateTime = Date()
+    @State private var latestUpdateTime: Date = .now
     @State private var priority: Priority = .middle
-    @State private var dueDate: Date = Date.now
+    @State private var dueDate: Date = .now
     @State private var category: Category = .default
     init(mode: PassingMode) {
         self.mode = mode
@@ -73,7 +73,7 @@ struct ModalView: View {
                                 todo.title = title
                                 todo.content = content
                                 todo.isDone = isDone
-                                todo.latestUpdateTime = Date()
+                                todo.latestUpdateTime = .now
                                 todo.category = category
                                 todo.priority = priority
                                 todo.dueDate = dueDate
