@@ -35,6 +35,7 @@ struct ModalView: View {
     }
     
     var body: some View {
+        
         NavigationStack {
             Form {
                 Section("옵션") {

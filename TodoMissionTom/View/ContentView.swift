@@ -12,7 +12,6 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query var todos: [Todo]
     @State private var searchText = "" // 검색어 상태
     @State private var modalStatus: PassingMode? // 모달창 상태
     @State private var selectedDone: Bool? // 완료 상태를 알고싶다!
@@ -21,26 +20,6 @@ struct ContentView: View {
     @State private var selectedDate: Date? // 지정한 날짜에 대해 알고싶다!
     @State private var sortingOption: SortingOption = .update
     @State private var isOrderForward: Bool = false
-    //    private var filteredTodo: [Todo] {
-    //        let filterdTodos = todos.filter { todo in
-    //            let searchFilter = searchText == "" || todo.title.localizedCaseInsensitiveContains(searchText) || todo.content.localizedCaseInsensitiveContains(searchText)
-    //            let caterotyFilter = selectedCategory == nil || todo.category == selectedCategory
-    //            let priorityFilter = selectedPriority == nil || todo.priority == selectedPriority
-    //            let completionFilter = selectedDone == nil || todo.isDone == selectedDone
-    //
-    //            // 필터 구현해야함 - 날짜필터 구현해야함
-    //            // let dateFilter
-    //
-    //            return searchFilter && caterotyFilter && priorityFilter && completionFilter
-    //        }
-    //        return filterdTodos.sorted { first, second in
-    //            let comparison: Bool
-    //
-    //
-    //            return comparison
-    //        } // 정렬 옵션 해야함
-    //    }
-    
     
     var filterView: some View {
         HStack {
@@ -82,30 +61,11 @@ struct ContentView: View {
     
     var body: some View {
         
-        
-        
         NavigationStack {
             // 필터뷰 구현 해야함
             filterView
             
-            List {
-                ForEach(todos) { todo in
-                    TodoRowAccordionView(todo: todo)
-                        .swipeActions(edge: .leading) {
-                            Button {
-                                modalStatus = .edit(todo)
-                            } label: {
-                                Text("edit")
-                            }
-                            
-                        }
-                }
-                .onDelete { IndexSet in
-                    for index in IndexSet {
-                        modelContext.delete(todos[index])
-                    }
-                }
-            }
+//            TodoListView
             .navigationTitle("Todo List")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -130,47 +90,14 @@ struct ContentView: View {
     }
 }
 
+
 #Preview {
+
     ContentView()
         .modelContainer(for: Todo.self)
 }
 
-struct TodoRowAccordionView: View {
-    
-    let todo: Todo
-    
-    var body: some View {
-        DisclosureGroup {
-            VStack(alignment: .leading, spacing: 8) {
-                Text(todo.content)
-                
-                HStack {
-                    Label("Due: ", systemImage: "calendar")
-                    Text(todo.dueDate.formatted(date: .abbreviated, time: .shortened))
-                }
-                .font(.caption)
-                .foregroundColor(.gray)
-                
-                HStack {
-                    Label("Updated: ", systemImage: "clock")
-                    Text(todo.latestUpdateTime.formatted(date: .abbreviated, time: .shortened))
-                }
-                .font(.caption)
-                .foregroundColor(.gray)
-            }
-        } label: {
-            Image(systemName: todo.isDone ? "chevron.down.circle" : "circle")
-                .onTapGesture {
-                    todo.isDone.toggle()
-                }
-            Text("\(todo.title)")
-            Spacer()
-            Text(todo.category.rawValue)
-            Text(todo.priority.rawValue)
-        }
-        
-    }
-}
+
 
 enum SortingOption {
     case date
@@ -191,36 +118,5 @@ enum PassingMode: Identifiable {
             return "\(todo.id)"
         }
     }
-}
-
-struct TodoListView {
-    @Query var todos: [Todo]
-    var searchText = "" // 검색어 상태
-    var selectedDone: Bool? // 완료 상태를 알고싶다!
-    var selectedCategory: Category? // 카테고리 지정한거 알고싶다!
-    var selectedPriority: Priority? // 우선순위 지정한거 알고싶다!
-    var selectedDate: Date? // 지정한 날짜에 대해 알고싶다!
-    var isOrderForward: Bool
-    
-    init(searchText: String, selectedDone: Bool?, selectedCategory: Category?, selectedPriority: Priority?, selectedDate: Date?, sortingOption: SortingOption, isOrderForward: Bool) {
-        self.searchText = searchText
-        self.selectedDone = selectedDone
-        self.selectedCategory = selectedCategory
-        self.selectedPriority = selectedPriority
-        self.selectedDate = selectedDate
-        self.isOrderForward = isOrderForward
-        
-        _todos = Query(filter: #Predicate<Todo> { todo in
-            (searchText.isEmpty || todo.title.localizedCaseInsensitiveContains(searchText)) || todo.content.localizedCaseInsensitiveCompare(searchText) && //검색어
-            
-            (selectedCategory == nil || todo.category == selectedCategory) && // 카테고리
-            
-            (selectedPriority == nil || todo.priority == selectedPriority)
-        },
-                       sort: \.title ,
-                       order: .forward) ,
-                       animation: .easeInOut)
-    }
-    
 }
 
