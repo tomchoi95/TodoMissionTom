@@ -8,8 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var searchText: String = ""
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            VStack {
+                Text("zz")
+            }
+            .searchable(text: $searchText)
+            .navigationTitle("Todo List")
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        // 추가 기능을 달거에요
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                    }
+
+                }
+            }
+        }
     }
 }
 
