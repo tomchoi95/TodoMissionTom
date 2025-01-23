@@ -58,9 +58,9 @@ struct ModalView: View {
                             todo.content = content
                             todo.isCompleted = isCompleted
                         }
-                        
                         dismiss()
                     }
+                    .disabled(title.isEmpty && content.isEmpty)
                 }
             }
         }
