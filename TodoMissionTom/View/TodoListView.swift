@@ -11,10 +11,25 @@ import SwiftData
 
 struct TodoListView: View {
     @Query() var todos: [Todo]
+    @Environment(\.modelContext) var modelContext
+    @Binding var modalViewMode: ModalViewMode?
+    
     var body: some View {
         List {
             ForEach(todos) { todo in
                 TodoListRowView(todo: todo)
+                    .swipeActions {
+                        Button {
+                            modalViewMode = .edit(todo)
+                        } label: {
+                            Label("수정", image: "pencil")
+                        }
+                    }
+            }
+            .onDelete { indexSet in
+                for index in indexSet {
+                    modelContext.delete(todos[index])
+                }
             }
         }
     }
@@ -32,10 +47,11 @@ struct TodoListRowView: View {
                 }
             Text(todo.title)
         }
-
     }
 }
 
 #Preview {
-    TodoListRowView(todo: Todo(title: "dummy title", content: "dummy content", initialDate: Date(), isCompleted: true))
+//    TodoListRowView(todo: Todo(title: "dummy title", content: "dummy content", initialDate: Date(), isCompleted: true))
+    @Previewable @State var bind: ModalViewMode?
+    TodoListView(modalViewMode: $bind)
 }

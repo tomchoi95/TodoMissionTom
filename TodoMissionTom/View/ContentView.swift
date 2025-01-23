@@ -10,11 +10,11 @@ import SwiftData
 
 struct ContentView: View {
     @State private var searchText: String = ""
-    @State private var modalViewMode: ModalViewMode?
+    @State var modalViewMode: ModalViewMode?
     var body: some View {
         NavigationStack {
             VStack {
-                TodoListView()
+                TodoListView(modalViewMode: $modalViewMode)
             }
             .searchable(text: $searchText)
             .navigationTitle("Todo List")

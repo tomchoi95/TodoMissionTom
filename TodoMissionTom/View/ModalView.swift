@@ -21,19 +21,20 @@ struct ModalView: View {
                 Section("제목") {
                     TextField("제목을 입력하세요", text: $title)
                 }
+                
                 Section("내용") {
                     TextField("내용을 입력하세요", text: $content, axis: .vertical)
                 }
             }
             .navigationTitle(title)
             .toolbar {
+                
                 ToolbarItem(placement: .cancellationAction) {
                     Button("cancel") {
                         dismiss()
                     }
                 }
-            }
-            .toolbar {
+                
                 ToolbarItem(placement: .bottomBar) {
                     Button("저장") {
                         let newTodo = Todo(title: title, content: content, initialDate: Date(), isCompleted: isCompleted)
