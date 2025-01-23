@@ -27,7 +27,7 @@ struct TodoListView: View {
             ForEach(todos) { todo in
                 TodoListRowView(todo: todo)
                     .swipeActions(allowsFullSwipe: false) {
-                        Button {
+                        Button(role: .destructive) {
                             modelContext.delete(todo)
                         } label: {
                             Label("삭제", image: "trash.fill")
@@ -38,6 +38,7 @@ struct TodoListView: View {
                         } label: {
                             Label("수정", image: "pencil")
                         }
+                        .tint(.orange)
                     }
             }
         }

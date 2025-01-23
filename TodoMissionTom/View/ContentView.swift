@@ -31,7 +31,6 @@ struct ContentView: View {
             .sheet(item: $modalViewMode) { mode in
                 ModalView(mode: mode)
             }
-            
         }
     }
 }
