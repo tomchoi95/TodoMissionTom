@@ -17,7 +17,8 @@ struct TodoListView: View {
     init(searchText: String, modalViewMode: Binding<ModalViewMode?>) {
         self._modalViewMode = modalViewMode
         let predicate = Todo.predicate(searchText: searchText)
-        _todos = @Query(filter: Todo.predicate(searchText: searchText), sort: \.content)
+        _todos = Query(
+            filter: predicate, sort: [SortDescriptor(\.title, order: .forward)])
     }
     
     
