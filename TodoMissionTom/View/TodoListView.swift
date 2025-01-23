@@ -14,6 +14,13 @@ struct TodoListView: View {
     @Environment(\.modelContext) var modelContext
     @Binding var modalViewMode: ModalViewMode?
     
+    init(searchText: String, modalViewMode: Binding<ModalViewMode?>) {
+        self._modalViewMode = modalViewMode
+        let predicate = Todo.predicate(searchText: searchText)
+        _todos = @Query(filter: predicate, sort: \.title , order: .forward, animation: .easeInOut)
+    }
+    
+    
     var body: some View {
         List {
             ForEach(todos) { todo in
@@ -53,8 +60,7 @@ struct TodoListRowView: View {
 
 #Preview {
 //    TodoListRowView(todo: Todo(title: "dummy title", content: "dummy content", initialDate: Date(), isCompleted: true))
-    @Previewable @State var bind: ModalViewMode?
-    TodoListView(modalViewMode: $bind)
+    TodoListView(searchText: "", modalViewMode: .constant(nil))
 }
 #Preview {
 }

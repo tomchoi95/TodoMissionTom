@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                TodoListView(modalViewMode: $modalViewMode)
+                TodoListView(searchText: searchText, modalViewMode: $modalViewMode)
             }
             .searchable(text: $searchText)
             .navigationTitle("Todo List")

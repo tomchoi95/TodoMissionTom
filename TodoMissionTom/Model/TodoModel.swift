@@ -24,4 +24,10 @@ final class Todo {
         self.initialDate = initialDate
         self.isCompleted = isCompleted
     }
+    
+    static func predicate(searchText: String) -> Predicate<Todo> {
+        return #Predicate<Todo>() { todo in
+            searchText.isEmpty || todo.title.localizedCaseInsensitiveContains(searchText) || todo.content.localizedCaseInsensitiveContains(searchText)
+        }
+    }
 }
