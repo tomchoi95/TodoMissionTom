@@ -23,14 +23,12 @@ struct TodoListView: View {
                             modelContext.delete(todo)
                         } label: {
                             Label("삭제", image: "trash.fill")
-                                .background(Color.red)
                         }
                         
                         Button {
                             modalViewMode = .edit(todo)
                         } label: {
                             Label("수정", image: "pencil")
-                                .background(Color.yellow)
                         }
                     }
             }

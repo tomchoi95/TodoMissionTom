@@ -15,6 +15,18 @@ struct ModalView: View {
     @State private var isCompleted: Bool = false
     let mode: ModalViewMode
     
+    init(mode: ModalViewMode) {
+        self.mode = mode
+        switch mode {
+        case .add:
+            return
+        case .edit(let todo):
+            _title = State(initialValue: todo.title)
+            _content = State(initialValue: todo.content)
+            _isCompleted = State(initialValue: todo.isCompleted)
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -37,8 +49,16 @@ struct ModalView: View {
                 
                 ToolbarItem(placement: .bottomBar) {
                     Button("저장") {
-                        let newTodo = Todo(title: title, content: content, initialDate: Date(), isCompleted: isCompleted)
-                        modelContext.insert(newTodo)
+                        switch mode {
+                        case .add:
+                            let newTodo = Todo(title: title, content: content, initialDate: Date(), isCompleted: isCompleted)
+                            modelContext.insert(newTodo)
+                        case .edit(let todo):
+                            todo.title = title
+                            todo.content = content
+                            todo.isCompleted = isCompleted
+                        }
+                        
                         dismiss()
                     }
                 }
