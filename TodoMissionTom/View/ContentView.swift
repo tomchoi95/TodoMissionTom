@@ -7,6 +7,7 @@
 // 데이터 입력 하기.
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     @State private var searchText: String = ""
@@ -55,4 +56,5 @@ enum ModalViewMode: Identifiable {
 
 #Preview {
     ContentView()
+        .modelContainer(for: Todo.self, inMemory: true)
 }
