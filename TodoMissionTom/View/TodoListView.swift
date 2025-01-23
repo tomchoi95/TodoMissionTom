@@ -26,6 +26,10 @@ struct TodoListRowView: View {
         DisclosureGroup {
             Text(todo.content)
         } label: {
+            Image(systemName: todo.isCompleted ? "chevron.down.circle.fill" : "bookmark.circle")
+                .onTapGesture {
+                    todo.isCompleted.toggle()
+                }
             Text(todo.title)
         }
 
@@ -33,5 +37,5 @@ struct TodoListRowView: View {
 }
 
 #Preview {
-    TodoListView()
+    TodoListRowView(todo: Todo(title: "dummy title", content: "dummy content", initialDate: Date(), isCompleted: true))
 }

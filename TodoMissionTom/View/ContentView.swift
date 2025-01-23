@@ -4,7 +4,6 @@
 //
 //  Created by 최범수 on 2025-01-23.
 //
-// 데이터 입력 하기.
 
 import SwiftUI
 import SwiftData
@@ -52,7 +51,6 @@ enum ModalViewMode: Identifiable {
         }
     }
 }
-
 
 #Preview {
     ContentView()
