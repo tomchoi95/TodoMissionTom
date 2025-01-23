@@ -18,18 +18,21 @@ struct TodoListView: View {
         List {
             ForEach(todos) { todo in
                 TodoListRowView(todo: todo)
-                    .swipeActions {
+                    .swipeActions(allowsFullSwipe: false) {
+                        Button {
+                            modelContext.delete(todo)
+                        } label: {
+                            Label("삭제", image: "trash.fill")
+                                .background(Color.red)
+                        }
+                        
                         Button {
                             modalViewMode = .edit(todo)
                         } label: {
                             Label("수정", image: "pencil")
+                                .background(Color.yellow)
                         }
                     }
-            }
-            .onDelete { indexSet in
-                for index in indexSet {
-                    modelContext.delete(todos[index])
-                }
             }
         }
     }
@@ -54,4 +57,6 @@ struct TodoListRowView: View {
 //    TodoListRowView(todo: Todo(title: "dummy title", content: "dummy content", initialDate: Date(), isCompleted: true))
     @Previewable @State var bind: ModalViewMode?
     TodoListView(modalViewMode: $bind)
+}
+#Preview {
 }
