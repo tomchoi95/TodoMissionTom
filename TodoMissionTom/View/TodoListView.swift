@@ -10,14 +10,14 @@ import SwiftUI
 import SwiftData
 
 struct TodoListView: View {
-    @Query() var todos: [Todo]
+    @Query var todos: [Todo]
     @Environment(\.modelContext) var modelContext
     @Binding var modalViewMode: ModalViewMode?
     
     init(searchText: String, modalViewMode: Binding<ModalViewMode?>) {
         self._modalViewMode = modalViewMode
         let predicate = Todo.predicate(searchText: searchText)
-        _todos = @Query(filter: predicate, sort: \.title , order: .forward, animation: .easeInOut)
+        _todos = @Query(filter: Todo.predicate(searchText: searchText), sort: \.content)
     }
     
     
@@ -58,9 +58,4 @@ struct TodoListRowView: View {
     }
 }
 
-#Preview {
-//    TodoListRowView(todo: Todo(title: "dummy title", content: "dummy content", initialDate: Date(), isCompleted: true))
-    TodoListView(searchText: "", modalViewMode: .constant(nil))
-}
-#Preview {
-}
+

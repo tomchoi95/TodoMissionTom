@@ -26,8 +26,8 @@ final class Todo {
     }
     
     static func predicate(searchText: String) -> Predicate<Todo> {
-        return #Predicate<Todo>() { todo in
-            searchText.isEmpty || todo.title.localizedCaseInsensitiveContains(searchText) || todo.content.localizedCaseInsensitiveContains(searchText)
+        return #Predicate<Todo> { todo in
+            (searchText.isEmpty || todo.title.localizedStandardContains(searchText) || todo.content.localizedStandardContains(searchText))
         }
     }
 }
