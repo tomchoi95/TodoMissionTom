@@ -4,7 +4,7 @@
 //
 //  Created by 최범수 on 2025-01-23.
 //
-// 
+// 데이터 입력 하기.
 
 import SwiftUI
 
@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("zz")
+                TodoListView()
             }
             .searchable(text: $searchText)
             .navigationTitle("Todo List")
