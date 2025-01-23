@@ -7,23 +7,26 @@
 
 
 import SwiftUI
+import SwiftData
 
 struct TodoListView: View {
+    @Query() var todos: [Todo]
     var body: some View {
         List {
-            ForEach(0 ... 10, id: \.self) { Identifiable in
-                TodoListRowView()
+            ForEach(todos) { todo in
+                TodoListRowView(todo: todo)
             }
         }
     }
 }
 
 struct TodoListRowView: View {
+    let todo: Todo
     var body: some View {
         DisclosureGroup {
-            Text("sㅐ용입니다")
+            Text(todo.content)
         } label: {
-            Text("레이블입니다")
+            Text(todo.title)
         }
 
     }
