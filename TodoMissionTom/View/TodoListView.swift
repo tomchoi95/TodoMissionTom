@@ -4,8 +4,7 @@
 //
 //  Created by 최범수 on 2025-01-23.
 //
-// 리스트 뷰 만들기 0
-// - 로우 뷰 만들어서 동적 구성 0
+
 
 import SwiftUI
 
@@ -18,7 +17,6 @@ struct TodoListView: View {
         }
     }
 }
-// 디스클로져로 구성 0
 
 struct TodoListRowView: View {
     var body: some View {

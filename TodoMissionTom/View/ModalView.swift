@@ -9,8 +9,11 @@ import SwiftUI
 
 struct ModalView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var modelContext
     @State private var title: String = ""
     @State private var content: String = ""
+    @State private var isCompleted: Bool = false
+    let mode: ModalViewMode
     
     var body: some View {
         NavigationStack {
@@ -33,7 +36,9 @@ struct ModalView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("저장") {
-                        // 저장 로직 추가
+                        let newTodo = Todo(title: title, content: content, initialDate: Date(), isCompleted: isCompleted)
+                        modelContext.insert(newTodo)
+                        dismiss()
                     }
                 }
             }
@@ -42,5 +47,5 @@ struct ModalView: View {
 }
 
 #Preview {
-    ModalView()
+    ModalView(mode: .add)
 }

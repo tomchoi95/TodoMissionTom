@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var searchText: String = ""
-    
+    @State private var searchText: String = ""
+    @State private var modalViewMode: ModalViewMode?
     var body: some View {
         NavigationStack {
             VStack {
@@ -21,16 +21,37 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem {
                     Button {
-                        // 추가 기능을 달거에요
+                        modalViewMode = .add
                     } label: {
                         Image(systemName: "plus.circle.fill")
                     }
-
+                    
                 }
             }
+            .sheet(item: $modalViewMode) { mode in
+                ModalView(mode: mode)
+            }
+            
         }
     }
 }
+
+
+
+enum ModalViewMode: Identifiable {
+    case add
+    case edit(Todo)
+    
+    var id: String {
+        switch self {
+        case .add:
+            "add"
+        case .edit(_):
+            "edit"
+        }
+    }
+}
+
 
 #Preview {
     ContentView()
