@@ -5,7 +5,7 @@
 //  Created by 최범수 on 2025-01-20.
 //
 
-// 모델에 필요한 것. ID, title, content, initialDate, isCompleted
+/// **데이터 마이그레이션 연습 시작**
 
 import SwiftUI
 import SwiftData
