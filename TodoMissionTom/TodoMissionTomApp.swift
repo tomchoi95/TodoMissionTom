@@ -14,7 +14,7 @@ struct TodoMissionTomApp: App {
         let schema = Schema([
             Todo.self
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true) // 저장 함
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false) // 저장 함
 
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])

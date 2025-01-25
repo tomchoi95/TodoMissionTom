@@ -10,6 +10,7 @@
 import SwiftUI
 import SwiftData
 
+
 @Model
 final class Todo {
     @Attribute(.unique) var id: UUID = UUID()
