@@ -66,11 +66,12 @@ enum SchemaVersion1_0_1: VersionedSchema {
         var isCompleted: Bool
         var priority: Priority = Priority.medium
         
-        init(title: String, content: String, initializedDate: Date, isCompleted: Bool) {
+        init(title: String, content: String, initializedDate: Date, isCompleted: Bool, priority: Priority) {
             self.title = title
             self.content = content
             self.initializedDate = initializedDate
             self.isCompleted = isCompleted
+            self.priority = priority
         }
         
         
