@@ -13,7 +13,6 @@ struct ModalView: View {
     @State private var title: String = ""
     @State private var content: String = ""
     @State private var isCompleted: Bool = false
-    @State private var priority: Priority = .medium
     let mode: ModalViewMode
     
     init(mode: ModalViewMode) {
@@ -52,7 +51,7 @@ struct ModalView: View {
                     Button("저장") {
                         switch mode {
                         case .add:
-                            let newTodo = Todo(title: title, content: content, initDate: Date(), isCompleted: isCompleted)
+                            let newTodo = Todo(title: title, content: content, initialDate: Date(), isCompleted: isCompleted)
                             modelContext.insert(newTodo)
                         case .edit(let todo):
                             todo.title = title

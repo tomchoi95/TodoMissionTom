@@ -17,7 +17,7 @@ struct TodoMissionTomApp: App {
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false) // 저장 함
 
         do {
-            return try ModelContainer(for: schema,migrationPlan: TodoMigrationPlan.self, configurations: [modelConfiguration])
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
