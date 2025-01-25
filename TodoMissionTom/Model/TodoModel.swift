@@ -22,16 +22,7 @@ enum TodoMigrationPlan:SchemaMigrationPlan {
     }
     
     static let migrateV1toV1_0_1 = MigrationStage.lightweight(fromVersion: TodoSchemaV1.self, toVersion: TodoSchemaV1_0_1.self)
-    static let migrateV1_0_1toV1_1_1 = MigrationStage.custom(fromVersion: TodoSchemaV1_0_1.self, toVersion: TodoSchemaV1_1_1.self,
-                                                             willMigrate: nil) { context in
-        // 마이그레이션 된 데이터를 불러다가 전제 거시기를 바꿀거임.
-        let Item = try? context.fetch(FetchDescriptor<TodoSchemaV1_1_1.Todo>())
-        Item?.forEach({ item in
-            item.priority = .high
-        })
-        try? context.save()
-    }
-
+    static let migrateV1_0_1toV1_1_1 = MigrationStage.lightweight(fromVersion: TodoSchemaV1_0_1.self, toVersion: TodoSchemaV1_1_1.self)
 }
 
 enum TodoSchemaV1: VersionedSchema {

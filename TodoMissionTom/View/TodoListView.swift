@@ -57,7 +57,7 @@ struct TodoListRowView: View {
                 }
             Text(todo.title)
             Spacer()
-            Text(todo.priority.rawValue)
+//            Text(todo.priority.rawValue)
         }
     }
 }
