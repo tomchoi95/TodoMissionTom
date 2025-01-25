@@ -56,6 +56,8 @@ struct TodoListRowView: View {
                     todo.isCompleted.toggle()
                 }
             Text(todo.title)
+            Spacer()
+            Text(todo.priority.rawValue)
         }
     }
 }

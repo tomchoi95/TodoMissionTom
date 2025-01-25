@@ -13,6 +13,7 @@ struct ModalView: View {
     @State private var title: String = ""
     @State private var content: String = ""
     @State private var isCompleted: Bool = false
+    @State private var priority: Priority = .medium
     let mode: ModalViewMode
     
     init(mode: ModalViewMode) {
