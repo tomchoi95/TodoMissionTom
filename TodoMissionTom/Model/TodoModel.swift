@@ -5,11 +5,12 @@
 //  Created by 최범수 on 2025-01-20.
 //
 
-/// **데이터 마이그레이션 연습 시작**
+// MARK: 엔티티 이름을 initialDate -> initializedDate로 수정하고, 새로운 컬럼(priority)을 만들어서 기본값 medium을 집어 넣어보자.
 
 import SwiftUI
 import SwiftData
 
+enum SchemaVersion1
 
 @Model
 final class Todo {
