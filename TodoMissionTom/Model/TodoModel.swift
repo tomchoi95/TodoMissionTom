@@ -170,6 +170,7 @@ enum SchemaVersion2_0_0: VersionedSchema {
         @Attribute(.unique)
         var title: String
         var todos: [Todo]? = []
+        var initializedDate = Date()
         init(title: String) {
             self.title = title
         }
@@ -178,7 +179,7 @@ enum SchemaVersion2_0_0: VersionedSchema {
 }
 
 
-enum Priority: Int, Codable {
+enum Priority: Int, Codable, CaseIterable {
     case high
     case medium
     case low
