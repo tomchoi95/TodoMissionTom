@@ -5,7 +5,7 @@
 //  Created by 최범수 on 2025-01-20.
 //
 
-// MARK: 모든 그 뭐냐 거시기를 완료했다고 변경해보자.
+// MARK: 마이그레이션
 
 import SwiftUI
 import SwiftData
@@ -18,11 +18,12 @@ enum MigrationPlan: SchemaMigrationPlan {
         [SchemaVersion1.self, SchemaVersion1_0_1.self, SchemaVersion1_0_2.self]
     }
     static var stages: [MigrationStage] {
-        [SchemaVersion1ToSchemaVersion1_0_1, SchemaVersion1ToSchemaVersion1_0_2]
+        [SchemaVersion1ToSchemaVersion1_0_1, SchemaVersion1_0_1ToSchemaVersion1_0_2]
     }
-    static let SchemaVersion1ToSchemaVersion1_0_1: MigrationStage = .lightweight(fromVersion: SchemaVersion1.self, toVersion: SchemaVersion1_0_1.self)
-    static let SchemaVersion1ToSchemaVersion1_0_2: MigrationStage = .lightweight(fromVersion: SchemaVersion1_0_1.self, toVersion: SchemaVersion1_0_2.self)
-    
+    static let SchemaVersion1ToSchemaVersion1_0_1: MigrationStage = .lightweight(
+        fromVersion: SchemaVersion1.self,
+        toVersion: SchemaVersion1_0_1.self)
+    static let SchemaVersion1_0_1ToSchemaVersion1_0_2: MigrationStage = .lightweight(fromVersion: SchemaVersion1_0_1.self, toVersion: SchemaVersion1_0_2.self)
 }
 
 enum SchemaVersion1: VersionedSchema {
@@ -49,8 +50,9 @@ enum SchemaVersion1: VersionedSchema {
         
         
     }
-
+    
 }
+// initialDate -> initializedDate 속성 이름 변경 우선순위 추가
 enum SchemaVersion1_0_1: VersionedSchema {
     static var models: [any PersistentModel.Type] {
         [Todo.self]
@@ -60,13 +62,19 @@ enum SchemaVersion1_0_1: VersionedSchema {
     
     @Model
     final class Todo {
-        @Attribute(.unique) var id: UUID = UUID()
+        @Attribute(.unique)
+        var id: UUID = UUID()
         var title: String
         var content: String
         @Attribute(originalName: "initialDate")
         var initializedDate: Date
         var isCompleted: Bool
-        var priority: Priority = Priority.medium
+        private var _priority: Int = 1
+        @Transient
+        var priority: Priority {
+            get { Priority(rawValue: _priority)! }
+            set { _priority = newValue.rawValue }
+        }
         
         init(title: String, content: String, initializedDate: Date, isCompleted: Bool, priority: Priority) {
             self.title = title
@@ -76,9 +84,8 @@ enum SchemaVersion1_0_1: VersionedSchema {
             self.priority = priority
         }
         
-        
     }
-
+    
 }
 enum SchemaVersion1_0_2: VersionedSchema {
     static var models: [any PersistentModel.Type] {
@@ -92,9 +99,15 @@ enum SchemaVersion1_0_2: VersionedSchema {
         @Attribute(.unique) var id: UUID = UUID()
         var title: String
         var content: String
+        @Attribute(originalName: "initialDate")
         var initializedDate: Date
         var isCompleted: Bool
-        var priority: Priority = Priority.medium
+        private var _priority: Int = 1
+        @Transient
+        var priority: Priority {
+            get { Priority(rawValue: _priority)! }
+            set { _priority = newValue.rawValue }
+        }
         @Relationship(deleteRule: .nullify, inverse: \Category.todos)
         var category: Category?
         
@@ -106,25 +119,34 @@ enum SchemaVersion1_0_2: VersionedSchema {
             self.priority = priority
             self.category = category
         }
-
+        
     }
     
     @Model
     final class Category {
+        @Attribute(.unique)
         var title: String
-        var todos: [Todo] = []
+        var todos: [Todo]? = []
         init(title: String) {
             self.title = title
         }
     }
-
+    
 }
 
 
-enum Priority: String, Codable {
-    case high = "🔴"
-    case medium = "🟡"
-    case low = "🟢"
+enum Priority: Int, Codable {
+    case high
+    case medium
+    case low
+    
+    var emoji: String {
+        switch self {
+        case .high: "🔴"
+        case .medium: "🟡"
+        case .low: "🟢"
+        }
+    }
 }
 
 

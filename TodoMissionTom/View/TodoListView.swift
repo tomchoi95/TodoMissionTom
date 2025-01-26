@@ -30,13 +30,13 @@ struct TodoListView: View {
                         Button(role: .destructive) {
                             modelContext.delete(todo)
                         } label: {
-                            Label("삭제", image: "trash.fill")
+                            Label("삭제", systemImage: "trash.fill")
                         }
                         
                         Button {
                             modalViewMode = .edit(todo)
                         } label: {
-                            Label("수정", image: "pencil")
+                            Label("수정", systemImage: "pencil")
                         }
                         .tint(.orange)
                     }
