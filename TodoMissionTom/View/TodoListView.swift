@@ -51,13 +51,21 @@ struct TodoListRowView: View {
         DisclosureGroup {
             Text(todo.content)
         } label: {
-            Image(systemName: todo.isCompleted ? "chevron.down.circle.fill" : "bookmark.circle")
-                .onTapGesture {
-                    todo.isCompleted.toggle()
-                }
-            Text(todo.title)
+            HStack {
+                Image(systemName: todo.isCompleted ? "chevron.down.circle.fill" : "bookmark.circle")
+                    .onTapGesture {
+                        todo.isCompleted.toggle()
+                    }
+                Text(todo.title)
+                Spacer()
+                Text(todo.priority.emoji)
+            }
         }
+        .disclosureGroupStyle(.automatic)
     }
 }
 
-
+#Preview {
+    TodoListView(searchText: " ", modalViewMode: .constant(nil))
+        .modelContainer(PreviewContainer.shared.container)
+}

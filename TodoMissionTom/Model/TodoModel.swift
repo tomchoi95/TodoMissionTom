@@ -10,8 +10,8 @@
 import SwiftUI
 import SwiftData
 
-typealias Todo = SchemaVersion1_0_2.Todo
-typealias Category = SchemaVersion1_0_2.Category
+typealias Todo = SchemaVersion2_0_0.Todo
+typealias Category = SchemaVersion2_0_0.Category
 
 enum MigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] {

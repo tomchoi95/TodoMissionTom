@@ -53,5 +53,5 @@ enum ModalViewMode: Identifiable {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Todo.self, inMemory: true)
+        .modelContainer(PreviewContainer.shared.container)
 }

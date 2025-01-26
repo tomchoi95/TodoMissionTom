@@ -31,6 +31,8 @@ struct ModalView: View {
     
     var body: some View {
         NavigationStack {
+            optionView
+                .background(Color.green,ignoresSafeAreaEdges: .horizontal)
             Form {
                 Section("제목") {
                     TextField("제목을 입력하세요", text: $title)
@@ -59,11 +61,21 @@ struct ModalView: View {
                             todo.title = title
                             todo.content = content
                             todo.isCompleted = isCompleted
+                            todo.priority = priority
+                            todo.category = category
                         }
                         dismiss()
                     }
                     .disabled(title.isEmpty && content.isEmpty)
                 }
+            }
+        }
+    }
+    
+    var optionView: some View {
+        VStack {
+            HStack {
+                Text("dasdfsdfadsgsagewgdsvd")
             }
         }
     }
