@@ -29,6 +29,11 @@
 			path = TodoMissionTom;
 			sourceTree = "<group>";
 		};
+		B3EC11F12D462C3B00F59A3E /* Experiment */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Experiment;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +52,7 @@
 			children = (
 				B32254732D39ED8500AB062E /* TodoMissionTom */,
 				B32254722D39ED8500AB062E /* Products */,
+				B3EC11F12D462C3B00F59A3E /* Experiment */,
 			);
 			sourceTree = "<group>";
 		};
@@ -75,6 +81,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				B32254732D39ED8500AB062E /* TodoMissionTom */,
+				B3EC11F12D462C3B00F59A3E /* Experiment */,
 			);
 			name = TodoMissionTom;
 			packageProductDependencies = (
@@ -161,7 +168,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kr.co.codegrove.TodoMissionTom;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.co.codegrove.Tom.TodoMission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -193,7 +200,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kr.co.codegrove.TodoMissionTom;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.co.codegrove.Tom.TodoMission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
