@@ -78,7 +78,7 @@ struct ModalView: View {
                             todo.priority = priority
                             todo.category = category
                             todo.deadline = deadline
-                            
+                            todo.lastUpdate = Date()
                         }
                         dismiss()
                     }
