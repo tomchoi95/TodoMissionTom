@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		B3B517B42D4657E100493942 /* TodoMissionTom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = TodoMissionTom.app; path = "/Users/choebeomsu/Desktop/dev/swift/SwiftUI/TodoMissionTom/build/Debug-iphoneos/TodoMissionTom.app"; sourceTree = "<absolute>"; };
+		B3358D732D470D9C002FD3B8 /* TodoMissionTom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoMissionTom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -52,6 +52,7 @@
 			children = (
 				B32254732D39ED8500AB062E /* TodoMissionTom */,
 				B3EC11F12D462C3B00F59A3E /* Experiment */,
+				B3358D732D470D9C002FD3B8 /* TodoMissionTom.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,7 +79,7 @@
 			packageProductDependencies = (
 			);
 			productName = TodoMissionTom;
-			productReference = B3B517B42D4657E100493942 /* TodoMissionTom.app */;
+			productReference = B3358D732D470D9C002FD3B8 /* TodoMissionTom.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

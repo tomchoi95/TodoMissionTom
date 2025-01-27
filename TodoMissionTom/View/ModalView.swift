@@ -18,7 +18,7 @@ struct ModalView: View {
     @State private var priority: Priority = .medium
     @State private var category: Category?
     @State private var newCategoryName: String = ""
-    @Query(filter: nil, sort: \Category.initializedDate, order: .forward, animation: .bouncy) var categories: [Category]
+    @Query(filter: nil, sort: \Category.initializedDate, order: .reverse) var categories: [Category]
     let mode: ModalViewMode
     
     init(mode: ModalViewMode) {
@@ -30,58 +30,60 @@ struct ModalView: View {
             _title = State(initialValue: todo.title)
             _content = State(initialValue: todo.content)
             _isCompleted = State(initialValue: todo.isCompleted)
+            _priority = State(initialValue: todo.priority)
+            _category = State(initialValue: todo.category)
         }
     }
     
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Option") {
-                    Picker("Priority", selection: $priority) {
-                        ForEach(Priority.allCases ,id: \.rawValue) { priority in
-                            Text(priority.emoji).tag(priority)
-                        }
-                    }
-                    
-                    HStack {
-                        Text("Category")
-                        Spacer()
-                        if categories.isEmpty {
-                            Button("Add Category") {
-                                withAnimation {
-                                    showingAddCategory = true
-                                }
+            ZStack {
+                Form {
+                    Section("Option") {
+                        Picker("Priority", selection: $priority) {
+                            ForEach(Priority.allCases ,id: \.rawValue) { priority in
+                                Text(priority.emoji).tag(priority)
                             }
-                        } else {
-                            Menu {
-                                Picker("Choose Category", selection: $category) {
-                                    ForEach(categories) { category in
-                                        Text(category.title).tag(Optional(category))
-                                    }
-                                    Text("None").tag(Category?.none)
-                                }
-                                Divider()
+                        }
+                        HStack {
+                            Text("Category")
+                            Spacer()
+                            if categories.isEmpty {
                                 Button("Add Category") {
                                     withAnimation {
                                         showingAddCategory = true
                                     }
                                 }
-                            } label: {
-                                Text(category?.title ?? "None")
+                            } else {
+                                Menu {
+                                    Picker("Choose Category", selection: $category) {
+                                        ForEach(categories) { category in
+                                            Text(category.title).tag(Optional(category))
+                                        }
+                                        Text("None").tag(Category?.none)
+                                    }
+                                    Divider()
+                                    Button("Add Category") {
+                                        withAnimation {
+                                            showingAddCategory = true
+                                        }
+                                    }
+                                } label: {
+                                    Text(category?.title ?? "None")
+                                }
                             }
                         }
+                        if showingAddCategory {
+                            addCategoryForm
+                        }
                     }
-                    if showingAddCategory {
-                        addCategoryForm
+                    Section("Title") {
+                        TextField("제목을 입력하세요", text: $title)
                     }
-                }
-                
-                Section("Title") {
-                    TextField("제목을 입력하세요", text: $title)
-                }
-                
-                Section("Content") {
-                    TextField("내용을 입력하세요", text: $content, axis: .vertical)
+                    
+                    Section("Content") {
+                        TextField("내용을 입력하세요", text: $content, axis: .vertical)
+                    }
                 }
             }
             .navigationTitle(title)
@@ -91,7 +93,6 @@ struct ModalView: View {
                         dismiss()
                     }
                 }
-                
                 ToolbarItem(placement: .automatic) {
                     Button("save") {
                         switch mode {
@@ -110,8 +111,8 @@ struct ModalView: View {
                     .disabled(title.isEmpty && content.isEmpty)
                 }
             }
-            
         }
+        
     }
     
     var addCategoryForm: some View {
@@ -119,14 +120,15 @@ struct ModalView: View {
             TextField("New Category", text: $newCategoryName)
             Button("add") {
                 withAnimation {
+                    showingAddCategory = false
                     let newCategory = Category(title: newCategoryName)
                     modelContext.insert(newCategory)
-                    showingAddCategory = false
                     newCategoryName.removeAll()
-                    category = categories.last
+                    category = newCategory
                 }
             }
-            Button("cancel", role: .cancel) {
+            .disabled(newCategoryName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            Button("cancel") {
                 withAnimation {
                     showingAddCategory = false
                     newCategoryName.removeAll()
