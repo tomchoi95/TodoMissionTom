@@ -14,13 +14,14 @@ struct TodoListView: View {
     @Environment(\.modelContext) var modelContext
     @Binding var modalViewMode: ModalViewMode?
     
-    init(searchText: String, modalViewMode: Binding<ModalViewMode?>) {
+    init(searchText: String, selectedPriority: Priority?, selectedCompleted: Bool?, sortOption: String, isForwardOrder: Bool, modalViewMode: Binding<ModalViewMode?>) {
         self._modalViewMode = modalViewMode
-        let predicate = Todo.predicate(searchText: searchText)
+        let predicate = Todo.predicate(searchText: searchText, selectedPriority: selectedPriority, selectedCompleted: selectedCompleted)
+        let sort = Todo.sort(sortOption: sortOption, isForwardOrder: isForwardOrder)
         _todos = Query(
-            filter: predicate, sort: [SortDescriptor(\.title, order: .forward)])
+            filter: predicate, sort: [sort])
     }
-    
+
     
     var body: some View {
         List {
@@ -87,6 +88,6 @@ struct TodoListRowView: View {
 }
 
 #Preview {
-    TodoListView(searchText: " ", modalViewMode: .constant(nil))
-        .modelContainer(PreviewContainer.shared.container)
+//    TodoListView(searchText: " ", modalViewMode: .constant(nil))
+//        .modelContainer(PreviewContainer.shared.container)
 }

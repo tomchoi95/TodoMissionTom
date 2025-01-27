@@ -43,15 +43,6 @@ struct CategorySearchView: View {
     }
 }
 
-extension Category {
-    static func predicate(_ searchText: String) -> Predicate<Category> {
-        return #Predicate<Category> { category in
-            searchText.isEmpty ||
-            category.title.localizedStandardContains(searchText)
-        }
-    }
-}
-
 #Preview {
     CategoryView()
         .modelContainer(PreviewContainer.shared.container)

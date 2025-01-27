@@ -168,7 +168,11 @@ enum SchemaVersion2_0_0: VersionedSchema {
     }
     
     @Model
-    final class Category {
+    final class Category: Comparable {
+        static func < (lhs: SchemaVersion2_0_0.Category, rhs: SchemaVersion2_0_0.Category) -> Bool {
+            lhs.title < rhs.title
+        }
+        
         @Attribute(.unique)
         var title: String
         var todos: [Todo]? = []
