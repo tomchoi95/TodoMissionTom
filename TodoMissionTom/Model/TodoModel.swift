@@ -153,14 +153,13 @@ enum SchemaVersion2_0_0: VersionedSchema {
         }
         @Relationship(deleteRule: .nullify, inverse: \Category.todos)
         var category: Category?
-        
         init(title: String, content: String, initializedDate: Date, isCompleted: Bool, priority: Priority, category: Category?) {
             self.title = title
             self.content = content
             self.initializedDate = initializedDate
             self.isCompleted = isCompleted
-            self.priority = priority
             self.category = category
+            self.priority = priority
         }
         
     }

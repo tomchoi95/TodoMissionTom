@@ -18,6 +18,7 @@ struct ModalView: View {
     @State private var priority: Priority = .medium
     @State private var category: Category?
     @State private var newCategoryName: String = ""
+    @State private var deadline: Date = Date()
     @Query(filter: nil, sort: \Category.initializedDate, order: .reverse) var categories: [Category]
     let mode: ModalViewMode
     
@@ -40,42 +41,9 @@ struct ModalView: View {
             ZStack {
                 Form {
                     Section("Option") {
-                        Picker("Priority", selection: $priority) {
-                            ForEach(Priority.allCases ,id: \.rawValue) { priority in
-                                Text(priority.emoji).tag(priority)
-                            }
-                        }
-                        HStack {
-                            Text("Category")
-                            Spacer()
-                            if categories.isEmpty {
-                                Button("Add Category") {
-                                    withAnimation {
-                                        showingAddCategory = true
-                                    }
-                                }
-                            } else {
-                                Menu {
-                                    Picker("Choose Category", selection: $category) {
-                                        ForEach(categories) { category in
-                                            Text(category.title).tag(Optional(category))
-                                        }
-                                        Text("None").tag(Category?.none)
-                                    }
-                                    Divider()
-                                    Button("Add Category") {
-                                        withAnimation {
-                                            showingAddCategory = true
-                                        }
-                                    }
-                                } label: {
-                                    Text(category?.title ?? "None")
-                                }
-                            }
-                        }
-                        if showingAddCategory {
-                            addCategoryForm
-                        }
+                        priorityRow
+                        categoryRow
+                        deadlinePickerRow
                     }
                     Section("Title") {
                         TextField("제목을 입력하세요", text: $title)
@@ -114,7 +82,48 @@ struct ModalView: View {
         }
         
     }
-    
+    var priorityRow: some View {
+        Picker("Priority", selection: $priority) {
+            ForEach(Priority.allCases ,id: \.rawValue) { priority in
+                Text(priority.emoji).tag(priority)
+            }
+        }
+    }
+    var categoryRow: some View {
+        Group {
+            HStack {
+                Text("Category")
+                Spacer()
+                if categories.isEmpty {
+                    Button("Add Category") {
+                        withAnimation {
+                            showingAddCategory = true
+                        }
+                    }
+                } else {
+                    Menu {
+                        Picker("Choose Category", selection: $category) {
+                            ForEach(categories) { category in
+                                Text(category.title).tag(Optional(category))
+                            }
+                            Text("None").tag(Category?.none)
+                        }
+                        Divider()
+                        Button("Add Category") {
+                            withAnimation {
+                                showingAddCategory = true
+                            }
+                        }
+                    } label: {
+                        Text(category?.title ?? "None")
+                    }
+                }
+            }
+            if showingAddCategory {
+                addCategoryForm
+            }
+        }
+    }
     var addCategoryForm: some View {
         HStack {
             TextField("New Category", text: $newCategoryName)
@@ -135,6 +144,9 @@ struct ModalView: View {
                 }
             }
         }
+    }
+    var deadlinePickerRow: some View {
+        DatePicker("Deadline", selection: $deadline, displayedComponents: [.date, .hourAndMinute])
     }
 }
 
