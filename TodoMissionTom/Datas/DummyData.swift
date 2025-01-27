@@ -37,7 +37,8 @@ class PreviewContainer {
                 initializedDate: Date(),
                 isCompleted: false,
                 priority: .high,
-                category: nil
+                category: nil,
+                deadline: Date()
             ),
             Todo(
                 title: "장보기",
@@ -45,7 +46,8 @@ class PreviewContainer {
                 initializedDate: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
                 isCompleted: true,
                 priority: .medium,
-                category: nil
+                category: nil,
+                deadline: Date()
             ),
             Todo(
                 title: "운동",
@@ -53,7 +55,8 @@ class PreviewContainer {
                 initializedDate: Date(),
                 isCompleted: false,
                 priority: .low,
-                category: nil
+                category: nil,
+                deadline: Date()
             ),
             Todo(
                 title: "책 읽기",
@@ -61,7 +64,8 @@ class PreviewContainer {
                 initializedDate: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
                 isCompleted: true,
                 priority: .medium,
-                category: nil
+                category: nil,
+                deadline: Date()
             ),
             Todo(
                 title: "프로젝트 마감",
@@ -69,7 +73,8 @@ class PreviewContainer {
                 initializedDate: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
                 isCompleted: false,
                 priority: .high,
-                category: nil
+                category: nil,
+                deadline: Date()
             ),
             Todo(
                 title: "친구 만나기",
@@ -77,7 +82,8 @@ class PreviewContainer {
                 initializedDate: Date(),
                 isCompleted: false,
                 priority: .low,
-                category: nil
+                category: nil,
+                deadline: Date()
             ),
             Todo(
                 title: "재무 점검",
@@ -85,7 +91,8 @@ class PreviewContainer {
                 initializedDate: Calendar.current.date(byAdding: .day, value: -5, to: Date())!,
                 isCompleted: true,
                 priority: .high,
-                category: nil
+                category: nil,
+                deadline: Date()
             ),
             Todo(
                 title: "영화 보기",
@@ -93,7 +100,8 @@ class PreviewContainer {
                 initializedDate: Date(),
                 isCompleted: false,
                 priority: .low,
-                category: nil
+                category: nil,
+                deadline: Date()
             ),
             Todo(
                 title: "블로그 글쓰기",
@@ -101,7 +109,8 @@ class PreviewContainer {
                 initializedDate: Calendar.current.date(byAdding: .day, value: -4, to: Date())!,
                 isCompleted: true,
                 priority: .medium,
-                category: nil
+                category: nil,
+                deadline: Date()
             ),
             Todo(
                 title: "정리 정돈",
@@ -109,7 +118,8 @@ class PreviewContainer {
                 initializedDate: Date(),
                 isCompleted: false,
                 priority: .low,
-                category: nil
+                category: nil,
+                deadline: Date()
             )
         ]
         dummies.forEach { dummy in
