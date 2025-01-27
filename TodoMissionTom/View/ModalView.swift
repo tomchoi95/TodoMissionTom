@@ -33,6 +33,7 @@ struct ModalView: View {
             _isCompleted = State(initialValue: todo.isCompleted)
             _priority = State(initialValue: todo.priority)
             _category = State(initialValue: todo.category)
+            _deadline = State(initialValue: todo.deadline)
         }
     }
     
@@ -44,6 +45,7 @@ struct ModalView: View {
                         priorityRow
                         categoryRow
                         deadlinePickerRow
+                        completionToggleRow
                     }
                     Section("Title") {
                         TextField("제목을 입력하세요", text: $title)
@@ -65,7 +67,7 @@ struct ModalView: View {
                     Button("save") {
                         switch mode {
                         case .add:
-                            let newTodo = Todo(title: title, content: content, initializedDate: Date(), isCompleted: isCompleted, priority: priority, category: category)
+                            let newTodo = Todo(title: title, content: content, initializedDate: Date(), isCompleted: isCompleted, priority: priority, category: category, deadline: deadline)
                             modelContext.insert(newTodo)
                         case .edit(let todo):
                             todo.title = title
@@ -73,6 +75,7 @@ struct ModalView: View {
                             todo.isCompleted = isCompleted
                             todo.priority = priority
                             todo.category = category
+                            todo.deadline = deadline
                         }
                         dismiss()
                     }
@@ -147,6 +150,9 @@ struct ModalView: View {
     }
     var deadlinePickerRow: some View {
         DatePicker("Deadline", selection: $deadline, displayedComponents: [.date, .hourAndMinute])
+    }
+    var completionToggleRow: some View {
+        Toggle("Completion", isOn: $isCompleted)
     }
 }
 

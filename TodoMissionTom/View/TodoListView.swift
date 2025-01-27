@@ -49,7 +49,27 @@ struct TodoListRowView: View {
     let todo: Todo
     var body: some View {
         DisclosureGroup {
-            Text(todo.content)
+            VStack(alignment: .leading) {
+                Text(todo.content)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 10)
+                Group {
+                    HStack {
+                        Text("\(Image(systemName: "deskclock"))")
+                        Text(todo.initializedDate, style: .date)
+                        Text(todo.initializedDate, style: .time)
+                    }
+                    HStack {
+                        Text("\(Image(systemName: "calendar.badge.clock"))")
+                        Text(todo.deadline, style: .date)
+                        Text(todo.deadline, style: .time)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+                .font(.subheadline)
+                .foregroundStyle(Color.gray)
+            }
+            
         } label: {
             HStack {
                 Image(systemName: todo.isCompleted ? "chevron.down.circle.fill" : "bookmark.circle")
