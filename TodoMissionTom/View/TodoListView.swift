@@ -55,7 +55,7 @@ struct TodoListRowView: View {
                     .padding(.bottom, 10)
                 Group {
                     HStack {
-                        Text("\(Image(systemName: "deskclock"))")
+                        Text("\(Image(systemName: "clock"))")
                         Text(todo.initializedDate, style: .date)
                         Text(todo.initializedDate, style: .time)
                     }
@@ -78,6 +78,7 @@ struct TodoListRowView: View {
                     }
                 Text(todo.title)
                 Spacer()
+                Text(todo.category?.title ?? "")
                 Text(todo.priority.emoji)
             }
         }

@@ -69,6 +69,8 @@ struct ModalView: View {
                         case .add:
                             let newTodo = Todo(title: title, content: content, initializedDate: Date(), isCompleted: isCompleted, priority: priority, category: category, deadline: deadline)
                             modelContext.insert(newTodo)
+                            category?.todos?.append(newTodo)
+                            try? modelContext.save()
                         case .edit(let todo):
                             todo.title = title
                             todo.content = content
@@ -76,6 +78,7 @@ struct ModalView: View {
                             todo.priority = priority
                             todo.category = category
                             todo.deadline = deadline
+                            
                         }
                         dismiss()
                     }
@@ -107,9 +110,9 @@ struct ModalView: View {
                     Menu {
                         Picker("Choose Category", selection: $category) {
                             ForEach(categories) { category in
-                                Text(category.title).tag(Optional(category))
+                                Text(category.title).tag(category as Category?)
                             }
-                            Text("None").tag(Category?.none)
+                            Text("None").tag(nil as Category?)
                         }
                         Divider()
                         Button("Add Category") {

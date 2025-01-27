@@ -12,24 +12,37 @@ struct ContentView: View {
     @State private var searchText: String = ""
     @State var modalViewMode: ModalViewMode?
     var body: some View {
-        NavigationStack {
-            VStack {
-                TodoListView(searchText: searchText, modalViewMode: $modalViewMode)
-            }
-            .searchable(text: $searchText)
-            .navigationTitle("Todo List")
-            .toolbar {
-                ToolbarItem {
-                    Button {
-                        modalViewMode = .add
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
+        TabView {
+            Tab {
+                NavigationStack {
+                    VStack {
+                        TodoListView(searchText: searchText, modalViewMode: $modalViewMode)
                     }
-                    
+                    .searchable(text: $searchText)
+                    .navigationTitle("Todo List")
+                    .toolbar {
+                        ToolbarItem {
+                            Button {
+                                modalViewMode = .add
+                            } label: {
+                                Image(systemName: "plus.circle.fill")
+                            }
+                            
+                        }
+                    }
+                    .sheet(item: $modalViewMode) { mode in
+                        ModalView(mode: mode)
+                    }
                 }
+            } label: {
+                Image(systemName: "clock")
+                Text("Todo")
             }
-            .sheet(item: $modalViewMode) { mode in
-                ModalView(mode: mode)
+            Tab {
+                CategoryView()
+            } label: {
+                Image(systemName: "archivebox")
+                Text("Categoy")
             }
         }
     }
