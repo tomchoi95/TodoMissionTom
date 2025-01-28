@@ -15,7 +15,9 @@ struct ContentView: View {
     @State private var selectedCategory: Category?
     @State private var selectedPriority: Priority?
     @State private var sortOption: Sort = .latest
+    @State private var dateOption: DateOption = .allday
     @State private var isForwardOrder: Bool = true
+    @State private var customDate: Date = Date()
     @Query var categories: [Category]
     @Query var todos: [Todo]
     private var filteredTodo: [Todo] {
@@ -33,7 +35,7 @@ struct ContentView: View {
             case .category: order = left.category?.title ?? "" < right.category?.title ?? ""
             case .priority: order = left.priority.rawValue < right.priority.rawValue
             }
-            return isForwardOrder ? order : !order
+            return isForwardOrder ? !order : order
         }
         return filteredAndSorted
     }
@@ -43,6 +45,12 @@ struct ContentView: View {
         case category = "카테고리순"
         case priority = "우선순위순"
     }
+    
+    enum DateOption: String, CaseIterable {
+        case allday = "All Day"
+        case thisWeek = "This Week"
+        case customDate = "Custom Date"
+    }
        
     
     var body: some View {
@@ -50,10 +58,10 @@ struct ContentView: View {
             Tab {
                 NavigationStack {
                     searchOptionView
-                    // 완료선택, 카테고리이름, 우선순위, 정렬옵션, 차순
                     VStack {
                         TodoListView(todos: filteredTodo, modalViewMode: $modalViewMode)
                     }
+                    .animation(.smooth, value: filteredTodo)
                     .searchable(text: $searchText)
                     .navigationTitle("Todo List")
                     .toolbar {
@@ -117,12 +125,22 @@ struct ContentView: View {
                 }
             }
             HStack {
-                Text("날짜 옵션")
-                Text("커스텀 날짜 옵션")
+                Menu(dateOption.rawValue) {
+                    Picker("date picker", selection: $dateOption) {
+                        ForEach(DateOption.allCases, id: \.rawValue) { option in
+                            Text(option.rawValue).tag(option)
+                        }
+                    }
+                }
+                if dateOption == .customDate {
+                    DatePicker("Custom Date", selection: $customDate, displayedComponents: [.date])
+                        .labelsHidden()
+                }
             }
         }
     }
 }
+
 struct TodoListView: View {
     @Environment(\.modelContext) var modelContext
     var todos: [Todo]
