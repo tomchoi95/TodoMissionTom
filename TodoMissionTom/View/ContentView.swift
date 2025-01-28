@@ -26,7 +26,20 @@ struct ContentView: View {
             let completionMatch = selectedCompleted == nil || todo.isCompleted == selectedCompleted
             let priorityMatch = selectedPriority == nil || todo.priority == selectedPriority
             let categoryMatch = selectedCategory == nil || todo.category == selectedCategory
-            return serchMatch && completionMatch && priorityMatch && categoryMatch
+            let dateMatch = {
+                let calendar = Calendar.current
+                switch dateOption {
+                case .allday:
+                    return true
+                case .thisWeek:
+                    return calendar.component(.weekOfYear, from: todo.deadline) == calendar.component(.weekOfYear, from: .now)
+                case .today:
+                    return calendar.isDate(todo.deadline, inSameDayAs: .now)
+                case .customDate:
+                    return calendar.isDate(todo.deadline, inSameDayAs: customDate)
+                }
+            }()
+            return serchMatch && completionMatch && priorityMatch && categoryMatch && dateMatch
         }
         let filteredAndSorted = filtered.sorted { left , right in
             let order: Bool
@@ -49,6 +62,7 @@ struct ContentView: View {
     enum DateOption: String, CaseIterable {
         case allday = "All Day"
         case thisWeek = "This Week"
+        case today = "Today"
         case customDate = "Custom Date"
     }
        
@@ -90,7 +104,6 @@ struct ContentView: View {
             }
         }
     }
-    
     var searchOptionView: some View {
         VStack {
             HStack {
@@ -167,7 +180,6 @@ struct TodoListView: View {
         }
     }
 }
-
 struct TodoListRowView: View {
     let todo: Todo
     var body: some View {
